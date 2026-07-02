@@ -2,15 +2,15 @@
 #define STRUCTURE_H
 
 // Для упрощения работы с цветами:
-#define EMPTY 0
-#define GREEN 1
-#define ORANGE 2
-#define YELLOW 3
-#define RED 4
-#define BLUE 5
-#define WHITE 6
-#define LEFT 7
-#define RIGTH 8
+#define EMPTY   0
+#define GREEN   10
+#define ORANGE  20
+#define YELLOW  30
+#define RED     40
+#define BLUE    50
+#define WHITE   60
+#define LEFT    70
+#define RIGTH   80
 
 // Структура одной стороны кубика Рубика.
 struct sideCR{

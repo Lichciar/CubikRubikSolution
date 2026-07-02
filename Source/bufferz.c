@@ -4,45 +4,70 @@
 
 // Очистка буфера.
 void bufferZClean(struct BufferZ *ptrBufferZ){
-    for (int loop = 0; loop < 12; loop++){
-        for (int pool = 0; pool < 27; pool++){
-            ptrBufferZ->signPlace[loop][pool] = 0;
+    for (int loop = 0; loop < 15; loop++){
+        for (int pool = 0; pool < 39; pool++){
+            ptrBufferZ->signPlace[loop][pool] = EMPTY;
         }; // pool
     }; // loop
 };
 
 // Вывод буфера на экран.
 void bufferZOutputInConsole(struct BufferZ *ptrBufferZ){
-    char *outputSign = " GOYRBW[]"; // Отображаемые символы на экране.
-    unsigned char index;            // Временная переменная.
+    char *outputNumber = " 123456789";  // Словарь с цифрами.
+    char *outputSign = " GOYRBW[]";     // Словарь с символами.
 
-    for (int loop = 0; loop < 12; loop++){
-        for (int pool = 0; pool < 27; pool++){
+    unsigned char index;    // Временная переменная.
+
+    // Перебираем все элементы буфера.
+    for (int loop = 0; loop < 15; loop++){
+        for (int pool = 0; pool < 39; pool++){
+
+            // Считываем значение элемента кубика.
             index = (ptrBufferZ->signPlace[loop][pool]);
-            printf("%c", outputSign[index]);
+
+            if (index > 9){
+                printf("%c", outputSign[index/10]);
+            } else {
+                printf("%c", outputNumber[index]);
+            };
         }; // pool
         printf("\n"); // Переводим каретку на новую строку.
+
     }; // loop
     printf("\n"); // Делаем отступ для читаемости.
+    printf("--------------------------------------\n\n");
 };
 
 // Переносим сторону кубика Рубика в буфер.
-void bufferZFillSide(int x, int y, struct sideCR *ptrSide, struct BufferZ *ptrBufferZ){
+void bufferZFillSide(int y, int x, struct sideCR *ptrSide, struct BufferZ *ptrBufferZ){
+
+    unsigned char counter;  // Счётчик для цвета элементов кубика.
+
     for (int loop = 0; loop < 3; loop++){
         for (int pool = 0; pool < 3; pool++){
-            ptrBufferZ->signPlace[y + loop][x + pool * 3] = LEFT;
-            ptrBufferZ->signPlace[y + loop][x + pool * 3 + 1] = ptrSide->side[loop][pool];
-            ptrBufferZ->signPlace[y + loop][x + pool * 3 + 2] = RIGTH;
+
+            counter = 0; // Сброс счётчика.
+
+            // Определяемся с цветом элемента.
+            while (ptrSide->side[loop][pool] > counter * 10 + 9){
+                counter++;
+            };
+
+            // Заполняем буфер.
+            ptrBufferZ->signPlace[y + loop][x + pool * 4] = LEFT;
+            ptrBufferZ->signPlace[y + loop][x + pool * 4 + 1] = counter * 10;                               // Цвет.
+            ptrBufferZ->signPlace[y + loop][x + pool * 4 + 2] = ptrSide->side[loop][pool] - counter * 10;   // Индекс.
+            ptrBufferZ->signPlace[y + loop][x + pool * 4 + 3] = RIGTH;
         }; // pool
     }; // loop
 };
 
 // Переносим кубик Рубика в буфер.
 void bufferZFillData(struct CubicRubik *ptrCR, struct BufferZ *ptrBufferZ){
-    bufferZFillSide(9, 0, &ptrCR->sideU, ptrBufferZ);
-    bufferZFillSide(0, 3, &ptrCR->sideL, ptrBufferZ);
-    bufferZFillSide(9, 3, &ptrCR->sideF, ptrBufferZ);
-    bufferZFillSide(18, 3, &ptrCR->sideR, ptrBufferZ);
-    bufferZFillSide(9, 6, &ptrCR->sideD, ptrBufferZ);
-    bufferZFillSide(9, 9, &ptrCR->sideB, ptrBufferZ);
+    bufferZFillSide(0, 13, &ptrCR->sideU, ptrBufferZ);
+    bufferZFillSide(4, 0, &ptrCR->sideL, ptrBufferZ);
+    bufferZFillSide(4, 13, &ptrCR->sideF, ptrBufferZ);
+    bufferZFillSide(4, 26, &ptrCR->sideR, ptrBufferZ);
+    bufferZFillSide(8, 13, &ptrCR->sideD, ptrBufferZ);
+    bufferZFillSide(12, 13, &ptrCR->sideB, ptrBufferZ);
 };

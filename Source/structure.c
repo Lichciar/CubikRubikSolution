@@ -2,9 +2,11 @@
 
 // Сброс одной стороны кубика.
 void structureSideReset(unsigned char defaultColor, struct sideCR *ptrSide){
+    unsigned char counter = 1;  // Счётчик.
     for (int loop = 0; loop < 3; loop++){
         for (int pool = 0; pool < 3; pool++){
-            ptrSide->side[loop][pool] = defaultColor;
+            ptrSide->side[loop][pool] = defaultColor + counter;
+            counter++;
         }; // pool
     }; // loop
 };

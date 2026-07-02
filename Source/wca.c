@@ -3,6 +3,9 @@
 
 #include "structure.h"  // Продключаем файл с описанием структуры кубика Рубика.
 
+// Вспомогательные функции:
+// ------------------------
+
 // Вращение стороны куба по часовой стрелке.
 void wca_clockewiseRotation(struct sideCR *ptrSide){
 
@@ -43,8 +46,11 @@ void wca_counterClockewiseRotation(struct sideCR *ptrSide){
     }; // loop
 };
 
+// Вращение всего куба:
+// --------------------
+
 // Вращение куба по часовой стрелки, если смотреть со стороны ПРАВОЙ грани.
-void wca_x(struct CubicRubik *ptrCR){
+void wca_r(struct CubicRubik *ptrCR){
     /*
      * R before     R after     L before     L after
      * [1][2][3]    [7][4][1]   [1][2][3]    [3][6][9]
@@ -54,7 +60,6 @@ void wca_x(struct CubicRubik *ptrCR){
      *   L F R => L D R
      *     D        B
      *     B        U
-     *  И не забываем что сторону L и R тоже поворачивавем по часовой стрелке.
      */
 
     struct sideCR bufferSide;       // Элемент стороны для работы.
@@ -77,8 +82,8 @@ void wca_x(struct CubicRubik *ptrCR){
     }; // loop
 };
 
-// Вращение куба против часовой стрелки, если смотреть со стороны ПРАВОЙ грани.
-void wca_xA(struct CubicRubik *ptrCR){
+// Вращение куба по часовой стрелки, если смотреть со стороны ЛЕВОЙ грани.
+void wca_l(struct CubicRubik *ptrCR){
     /*
      * R before     R after     L before     L after
      * [1][2][3]    [3][6][9]   [1][2][3]    [7][4][1]
@@ -88,7 +93,6 @@ void wca_xA(struct CubicRubik *ptrCR){
      *   L F R => L U R
      *     D        F
      *     B        D
-     *  И не забываем что сторону L и R тоже поворачивавем по часовой стрелке.
      */
 
     struct sideCR bufferSide;       // Элемент стороны для работы.
@@ -99,7 +103,7 @@ void wca_xA(struct CubicRubik *ptrCR){
     // Поворачиваем ЛЕВУЮ сторону по часовой стрелке.
     wca_clockewiseRotation(&ptrCR->sideL);
 
-    // Стороны UFDB меняем на BUFD (вращение против часовой стрелки со стороны R).
+    // Стороны UFDB меняем на BUFD (вращение по часовой стрелки со стороны L).
     for (int loop = 0; loop < 3; loop++){
         for (int pool = 0; pool < 3; pool++){
             bufferSide.side[loop][pool] = ptrCR->sideB.side[loop][pool];
@@ -111,9 +115,142 @@ void wca_xA(struct CubicRubik *ptrCR){
     }; // loop
 };
 
-// y сверху
-//
-// z фронтально
+// Вращение куба по часовой стрелки, если смотреть со стороны ВЕРХНЕЙ грани.
+void wca_u(struct CubicRubik *ptrCR){
+    /*
+     * U before     U after     D before     D after
+     * [1][2][3]    [7][4][1]   [1][2][3]    [3][6][9]
+     * [4][5][6] => [8][5][2]   [4][5][6] => [2][5][8]
+     * [7][8][9]    [9][6][3]   [7][8][9]    [1][4][7]
+     *     U        U
+     *   L F R => F R B
+     *     D        D
+     *     B        L
+     */
+
+    struct sideCR bufferSide;       // Элемент стороны для работы.
+
+    // Поворачиваем ВЕРХНЮЮ сторону по часовой стрелке.
+    wca_clockewiseRotation(&ptrCR->sideU);
+
+    // Поворачиваем НИЖНЮЮ сторону против часовой стрелки.
+    wca_counterClockewiseRotation(&ptrCR->sideD);
+
+    // Стороны LFRB меняем на FRBL (вращение по часовой стрелки со стороны U).
+    for (int loop = 0; loop < 3; loop++){
+        for (int pool = 0; pool < 3; pool++){
+            // При записи из/в B нужно помнить, что B отзеркалена по вертикали.
+            bufferSide.side[loop][pool] = ptrCR->sideL.side[loop][pool];
+            ptrCR->sideL.side[loop][pool] = ptrCR->sideF.side[loop][pool];
+            ptrCR->sideF.side[loop][pool] = ptrCR->sideR.side[loop][pool];
+            ptrCR->sideR.side[loop][pool] = ptrCR->sideB.side[2 - loop][pool];
+            ptrCR->sideB.side[loop][pool] = bufferSide.side[loop][pool];
+        }; // pool
+    }; // loop
+};
+
+// Вращение куба по часовой стрелки, если смотреть со стороны НИЖНЕЙ грани.
+void wca_d(struct CubicRubik *ptrCR){
+    /*
+     * D before     D after     U before     DU after
+     * [1][2][3]    [7][4][1]   [1][2][3]    [3][6][9]
+     * [4][5][6] => [8][5][2]   [4][5][6] => [2][5][8]
+     * [7][8][9]    [9][6][3]   [7][8][9]    [1][4][7]
+     *     U        U
+     *   L F R => B L F
+     *     D        D
+     *     B        R
+     */
+
+    struct sideCR bufferSide;       // Элемент стороны для работы.
+
+    // Поворачиваем НИЖНЮЮ сторону по часовой стрелке.
+    wca_clockewiseRotation(&ptrCR->sideD);
+
+    // Поворачиваем ВЕРХНЮЮ сторону против часовой стрелки.
+    wca_counterClockewiseRotation(&ptrCR->sideU);
+
+    // Стороны LFRB меняем на BLFR (вращение по часовой стрелки со стороны D).
+    for (int loop = 0; loop < 3; loop++){
+        for (int pool = 0; pool < 3; pool++){
+            // При записи из/в B нужно помнить, что B отзеркалена по вертикали.
+            bufferSide.side[loop][pool] = ptrCR->sideL.side[loop][pool];
+            ptrCR->sideL.side[loop][pool] = ptrCR->sideB.side[2 - loop][2 - pool];
+            ptrCR->sideB.side[loop][pool] = ptrCR->sideR.side[loop][pool];
+            ptrCR->sideR.side[loop][pool] = ptrCR->sideF.side[loop][pool];
+            ptrCR->sideF.side[loop][pool] = bufferSide.side[loop][pool];
+        }; // pool
+    }; // loop
+};
+
+// Вращение куба по часовой стрелки, если смотреть со стороны ФРОНТАЛЬНОЙ грани.
+void wca_f(struct CubicRubik *ptrCR){
+    /*
+     * F before     F after     B before     B after
+     * [1][2][3]    [7][4][1]   [1][2][3]    [3][6][9]
+     * [4][5][6] => [8][5][2]   [4][5][6] => [2][5][8]
+     * [7][8][9]    [9][6][3]   [7][8][9]    [1][4][7]
+     *     U        L
+     *   L F R => D F U
+     *     D        R
+     *     B        B
+     */
+
+    struct sideCR bufferSide;       // Элемент стороны для работы.
+
+    // Поворачиваем ФРОНТАЛЬНУЮ сторону по часовой стрелке.
+    wca_clockewiseRotation(&ptrCR->sideF);
+
+    // Поворачиваем ТЫЛОВУЮ сторону против часовой стрелки.
+    wca_counterClockewiseRotation(&ptrCR->sideB);
+
+    // Стороны LURD меняем на DLUR (вращение по часовой стрелки со стороны F).
+    for (int loop = 0; loop < 3; loop++){
+        for (int pool = 0; pool < 3; pool++){
+            bufferSide.side[loop][pool] = ptrCR->sideL.side[loop][pool];
+            ptrCR->sideL.side[loop][pool] = ptrCR->sideD.side[loop][pool];
+            ptrCR->sideD.side[loop][pool] = ptrCR->sideR.side[loop][pool];
+            ptrCR->sideR.side[loop][pool] = ptrCR->sideU.side[loop][pool];
+            ptrCR->sideU.side[loop][pool] = bufferSide.side[loop][pool];
+        }; // pool
+    }; // loop
+};
+
+// Вращение куба по часовой стрелки, если смотреть со стороны ТЫЛОВОЙ грани.
+void wca_b(struct CubicRubik *ptrCR){
+    /*
+     * B before     B after     F before     F after
+     * [1][2][3]    [7][4][1]   [1][2][3]    [3][6][9]
+     * [4][5][6] => [8][5][2]   [4][5][6] => [2][5][8]
+     * [7][8][9]    [9][6][3]   [7][8][9]    [1][4][7]
+     *     U        R
+     *   L F R => U F D
+     *     D        L
+     *     B        B
+     */
+
+    struct sideCR bufferSide;       // Элемент стороны для работы.
+
+    // Поворачиваем ТЫЛОВУЮ сторону по часовой стрелке.
+    wca_clockewiseRotation(&ptrCR->sideB);
+
+    // Поворачиваем ФРОНТАЛЬНУЮ сторону против часовой стрелки.
+    wca_counterClockewiseRotation(&ptrCR->sideF);
+
+    // Стороны LURD меняем на URDL (вращение по часовой стрелки со стороны B).
+    for (int loop = 0; loop < 3; loop++){
+        for (int pool = 0; pool < 3; pool++){
+            bufferSide.side[loop][pool] = ptrCR->sideL.side[loop][pool];
+            ptrCR->sideL.side[loop][pool] = ptrCR->sideU.side[loop][pool];
+            ptrCR->sideU.side[loop][pool] = ptrCR->sideR.side[loop][pool];
+            ptrCR->sideR.side[loop][pool] = ptrCR->sideD.side[loop][pool];
+            ptrCR->sideD.side[loop][pool] = bufferSide.side[loop][pool];
+        }; // pool
+    }; // loop
+};
+
+// Вращение ФРОНТАЛЬНОЙ стороны:
+// -----------------------------
 
 // Вращение ФРОНТАЛЬНОЙ стороны по часовой стрелке.
 void wca_F(struct CubicRubik *ptrCR){
@@ -220,6 +357,89 @@ void wca_FwA(struct CubicRubik *ptrCR){
     }; // loop
 
 };
+
+/*  Вращение ТЫЛОВОЙ стороны:
+    -- Хитрые вращения кубика --
+    ---------------------------- */
+
+// Вращения ТЫЛОВОЙ стороны по часовой стрелке.
+void wca_B(struct CubicRubik *ptrCR){
+
+    // Вращаем два раза по часовой стрелке со стороны U, чтобы сторона F стала В.
+    wca_u(ptrCR);
+    wca_u(ptrCR);
+
+    // И применяем ФРОНТАЛЬНОЕ вращение по часовой стрелке.
+    wca_F(ptrCR);
+
+    // Вращаем два раза по часовой стрелке со стороны D, для того чтобы вернуть в исходное положение.
+    wca_d(ptrCR);
+    wca_d(ptrCR);
+};
+
+// Вращения ТЫЛОВОЙ стороны против часовой стрелке.
+void wca_BA(struct CubicRubik *ptrCR){
+
+    // Вращаем два раза по часовой стрелке со стороны U, чтобы сторона F стала В.
+    wca_u(ptrCR);
+    wca_u(ptrCR);
+
+    // И применяем ФРОНТАЛЬНОЕ вращение против часовой стрелке.
+    wca_FA(ptrCR);
+
+    // Вращаем два раза по часовой стрелке со стороны D, для того чтобы вернуть в исходное положение.
+    wca_d(ptrCR);
+    wca_d(ptrCR);
+};
+
+// Вращения ТЫЛОВОЙ стороны по часовой стрелке и среднего слоя.
+void wca_Bw(struct CubicRubik *ptrCR){
+
+    // Вращаем два раза по часовой стрелке со стороны U, чтобы сторона F стала В.
+    wca_u(ptrCR);
+    wca_u(ptrCR);
+
+    // И применяем ФРОНТАЛЬНОЕ вращение по часовой стрелке стороны и среднего слоя.
+    wca_Fw(ptrCR);
+
+    // Вращаем два раза по часовой стрелке со стороны D, для того чтобы вернуть в исходное положение.
+    wca_d(ptrCR);
+    wca_d(ptrCR);
+};
+
+// Вращения ТЫЛОВОЙ стороны против часовой стрелке и среднего слоя.
+void wca_BwA(struct CubicRubik *ptrCR){
+
+    // Вращаем два раза по часовой стрелке со стороны U, чтобы сторона F стала В.
+    wca_u(ptrCR);
+    wca_u(ptrCR);
+
+    // И применяем ФРОНТАЛЬНОЕ вращение против часовой стрелке стороны и среднего слоя.
+    wca_FwA(ptrCR);
+
+    // Вращаем два раза по часовой стрелке со стороны D, для того чтобы вернуть в исходное положение.
+    wca_d(ptrCR);
+    wca_d(ptrCR);
+};
+
+/*  Вращение ЛЕВОЙ стороны:
+    -- Хитрые вращения кубика --
+    ---------------------------- */
+
+// Вращения ЛЕВОЙ стороны по часовой стрелке.
+void wca_L(struct CubicRubik *ptrCR){
+
+    // Вращаем по часовой стрелке со стороны D, чтобы сторона F стала L.
+    wca_d(ptrCR);
+
+    // И применяем ФРОНТАЛЬНОЕ вращение по часовой стрелке.
+    wca_F(ptrCR);
+
+    // Вращаем по часовой стрелке со стороны U, для того чтобы вернуть в исходное положение.
+    wca_u(ptrCR);
+};
+
+
 
 // Для остальных вращений можно пойти на хитрость: сначала поддельный кубик разворачивать нужной стороной на фронтальную.
 // Затем вращать.

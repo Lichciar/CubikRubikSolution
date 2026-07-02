@@ -1,7 +1,7 @@
 /*  CubicRibikaSolution:
     Эмулятор кубика Рубика.
     Начало: 13 июня 2026 г.
-    Изменено: 29 июня 2026 г. */
+    Изменено: 02 июля 2026 г. */
 
 #include "structure.h"  // Продключаем файл с описанием структуры кубика Рубика.
 #include "bufferz.h"    // Подключаем файл с описание буфера для вывода на консоль всего кубика Рубика.
@@ -15,7 +15,7 @@ int main(int argc, char *argv[]){
     bufferZClean(&currentBuffer);           // Очищаем буфер.
     structureCRReset(&currentCR);           // Сбрасываем кубик.
 
-    // для ТЕСТА!!!
+    /* для ТЕСТА!!!
     currentCR.sideF.side[0][0] = GREEN;
     currentCR.sideF.side[0][1] = ORANGE;
     currentCR.sideF.side[0][2] = YELLOW;
@@ -24,7 +24,7 @@ int main(int argc, char *argv[]){
     currentCR.sideF.side[1][2] = WHITE;
     currentCR.sideF.side[2][0] = YELLOW;
     currentCR.sideF.side[2][1] = RED;
-    currentCR.sideF.side[2][2] = ORANGE;
+    currentCR.sideF.side[2][2] = ORANGE; */
 
     /*
     for (int loop = 0; loop < 3; loop++){
@@ -37,14 +37,25 @@ int main(int argc, char *argv[]){
     }; // loop
     */
 
-    bufferZFillData(&currentCR, &currentBuffer);    // Переносим кубик в буфер.
-    bufferZOutputInConsole(&currentBuffer);         // Выводим буфер в консоль.
-
-    wca_Fw(&currentCR); // Тестовые вращения.
 
     bufferZFillData(&currentCR, &currentBuffer);    // Переносим кубик в буфер.
     bufferZOutputInConsole(&currentBuffer);         // Выводим буфер в консоль.
 
+    //printf("wca_d\n");
+    wca_u(&currentCR); // Тестовые вращения.
+    bufferZFillData(&currentCR, &currentBuffer);    // Переносим кубик в буфер.
+    bufferZOutputInConsole(&currentBuffer);         // Выводим буфер в консоль.
+     /*
+    printf("wca_F\n");
+    wca_F(&currentCR); // Тестовые вращения.
+    bufferZFillData(&currentCR, &currentBuffer);    // Переносим кубик в буфер.
+    bufferZOutputInConsole(&currentBuffer);         // Выводим буфер в консоль.
+
+    printf("wca_u\n");
+    wca_u(&currentCR); // Тестовые вращения.
+    bufferZFillData(&currentCR, &currentBuffer);    // Переносим кубик в буфер.
+    bufferZOutputInConsole(&currentBuffer);         // Выводим буфер в консоль.
+    */
     // Вывод аргументов
     //for (int i = 0; i < argc; i++) {
     //    printf("Аргумент %d: %s\n", i, argv[i]);
