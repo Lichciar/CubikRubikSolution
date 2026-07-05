@@ -1,5 +1,8 @@
+# Ключ -l означает подключение библиотеки.
+# -lm означает подключить библиотеку m (сокращение от libm, а файлах подключается, как math.h)
+
 CC = gcc
-FLAG = -Wall -Werror
+FLAG = -Wall -Wextra -Werror
 
 VERSION = 0_8
 TARGET = crs_$(VERSION)

@@ -1,4 +1,5 @@
 #include "structure.h"  // Продключаем файл с описанием структуры кубика Рубика.
+#include <stdio.h>
 
 // Сброс одной стороны кубика.
 void structureSideReset(unsigned char defaultColor, struct sideCR *ptrSide){
@@ -19,4 +20,12 @@ void structureCRReset(struct CubicRubik *ptrCR){
     structureSideReset(RED, &(ptrCR->sideR));
     structureSideReset(BLUE, &(ptrCR->sideD));
     structureSideReset(WHITE, &(ptrCR->sideB));
+};
+
+// Сохранение экземпляра кубика Рубика на диск.
+void structureSaveCR(struct CubicRubik *ptrCR, char *filename){
+    int size = sizeof(struct CubicRubik);   // Определяем размер структуры CubikRubik'а.
+    FILE *fileCR = fopen(filename, "w");    // Открываем файл для записи.
+    fwrite(ptrCR, size, 1, fileCR);         // Записываем структуру в файл.
+    fclose(fileCR);                         // Закрываем файл.
 };

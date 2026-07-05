@@ -8,7 +8,8 @@
 #include "wca.h"        // Подключаем файл с командами вращения кубика Рубика.
 
 // Основная программа:
-int main(int argc, char *argv[]){
+// int main(int argc, char *argv[]){
+int main(){
     struct CubicRubik currentCR;    // Создаем экземпляр кубика Рубика.
     struct BufferZ currentBuffer;   // Создаём кэземпляр буфера для вывода на консоль.
 
@@ -38,13 +39,14 @@ int main(int argc, char *argv[]){
     */
 
 
-    bufferZFillData(&currentCR, &currentBuffer);    // Переносим кубик в буфер.
-    bufferZOutputInConsole(&currentBuffer);         // Выводим буфер в консоль.
+    bufferZFillData(&currentCR, &currentBuffer);        // Переносим кубик в буфер.
+    bufferZOutputInConsole(&currentBuffer);             // Выводим буфер в консоль.
 
     //printf("wca_d\n");
-    wca_DwA(&currentCR); // Тестовые вращения.
-    bufferZFillData(&currentCR, &currentBuffer);    // Переносим кубик в буфер.
-    bufferZOutputInConsole(&currentBuffer);         // Выводим буфер в консоль.
+    wca_f(&currentCR); // Тестовые вращения.
+    bufferZFillData(&currentCR, &currentBuffer);        // Переносим кубик в буфер.
+    bufferZOutputInConsole(&currentBuffer);             // Выводим буфер в консоль.
+    structureSaveCR(&currentCR, CRSTORAGE"test.cr");    // Сохраняем кубик Рубик на диск.
 
     // Вывод аргументов
     //for (int i = 0; i < argc; i++) {

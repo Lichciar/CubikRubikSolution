@@ -207,11 +207,11 @@ void wca_f(struct CubicRubik *ptrCR){
     // Стороны LURD меняем на DLUR (вращение по часовой стрелки со стороны F).
     for (int loop = 0; loop < 3; loop++){
         for (int pool = 0; pool < 3; pool++){
-            bufferSide.side[loop][pool] = ptrCR->sideU.side[pool][2 - loop];
-            ptrCR->sideU.side[pool][2 - loop] = ptrCR->sideL.side[loop][pool];
-            ptrCR->sideL.side[loop][pool] = ptrCR->sideD.side[2 - pool][loop];
-            ptrCR->sideD.side[2 - pool][loop] = ptrCR->sideR.side[2 - loop][2 - pool];
-            ptrCR->sideR.side[2 - loop][2 - pool] = bufferSide.side[loop][pool];
+            bufferSide.side[loop][pool] = ptrCR->sideU.side[loop][pool];
+            ptrCR->sideU.side[loop][pool] = ptrCR->sideL.side[2 - pool][loop];
+            ptrCR->sideL.side[2 - pool][loop] = ptrCR->sideD.side[2 - loop][2 - pool];
+            ptrCR->sideD.side[2 - loop][2 - pool] = ptrCR->sideR.side[pool][2 - loop];
+            ptrCR->sideR.side[pool][2 - loop] = bufferSide.side[loop][pool];
         }; // pool
     }; // loop
 };
@@ -645,9 +645,3 @@ void wca_DwA(struct CubicRubik *ptrCR){
     // Вращаем по часовой стрелке со стороны L, для того чтобы вернуть в исходное положение.
     wca_l(ptrCR);
 };
-
-// Для остальных вращений можно пойти на хитрость: сначала поддельный кубик разворачивать нужной стороной на фронтальную.
-// Затем вращать.
-// Возвращать кубик в нужную сторону.
-// Это будет окономичное написание кода, но не экономичное выполнение кода.
-// В принципе можно и попробывать для прикола.

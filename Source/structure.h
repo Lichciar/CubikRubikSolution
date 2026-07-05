@@ -12,6 +12,9 @@
 #define LEFT    70
 #define RIGTH   80
 
+// Каталог для хранения экземпляров кубика Рубика.
+#define CRSTORAGE "./CRStorage/"
+
 // Структура одной стороны кубика Рубика.
 struct sideCR{
     unsigned char side[3][3];
@@ -53,5 +56,6 @@ struct CubicRubik{
 // Объявление фуекций:
 void structureSideReset(unsigned char defaultColor, struct sideCR *ptrSide);
 void structureCRReset(struct CubicRubik *ptrCR);
+void structureSaveCR(struct CubicRubik *ptrCR, char *filename);
 
 #endif
