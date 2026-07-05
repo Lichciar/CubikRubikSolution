@@ -1,7 +1,7 @@
 CC = gcc
 FLAG = -Wall -Werror
 
-VERSION = 0_7
+VERSION = 0_8
 TARGET = crs_$(VERSION)
 
 all: $(TARGET)

@@ -1,7 +1,7 @@
 /*  CubicRibikaSolution:
     Эмулятор кубика Рубика.
     Начало: 13 июня 2026 г.
-    Изменено: 02 июля 2026 г. */
+    Изменено: 05 июля 2026 г. */
 
 #include "structure.h"  // Продключаем файл с описанием структуры кубика Рубика.
 #include "bufferz.h"    // Подключаем файл с описание буфера для вывода на консоль всего кубика Рубика.
@@ -42,20 +42,10 @@ int main(int argc, char *argv[]){
     bufferZOutputInConsole(&currentBuffer);         // Выводим буфер в консоль.
 
     //printf("wca_d\n");
-    wca_u(&currentCR); // Тестовые вращения.
-    bufferZFillData(&currentCR, &currentBuffer);    // Переносим кубик в буфер.
-    bufferZOutputInConsole(&currentBuffer);         // Выводим буфер в консоль.
-     /*
-    printf("wca_F\n");
-    wca_F(&currentCR); // Тестовые вращения.
+    wca_DwA(&currentCR); // Тестовые вращения.
     bufferZFillData(&currentCR, &currentBuffer);    // Переносим кубик в буфер.
     bufferZOutputInConsole(&currentBuffer);         // Выводим буфер в консоль.
 
-    printf("wca_u\n");
-    wca_u(&currentCR); // Тестовые вращения.
-    bufferZFillData(&currentCR, &currentBuffer);    // Переносим кубик в буфер.
-    bufferZOutputInConsole(&currentBuffer);         // Выводим буфер в консоль.
-    */
     // Вывод аргументов
     //for (int i = 0; i < argc; i++) {
     //    printf("Аргумент %d: %s\n", i, argv[i]);

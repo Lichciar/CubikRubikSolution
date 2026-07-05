@@ -23,8 +23,23 @@ void wca_Bw(struct CubicRubik *ptrCR);
 void wca_BwA(struct CubicRubik *ptrCR);
 
 void wca_L(struct CubicRubik *ptrCR);
-//void wca_LA(struct CubicRubik *ptrCR);
-//void wca_Lw(struct CubicRubik *ptrCR);
-//void wca_LwA(struct CubicRubik *ptrCR);
+void wca_LA(struct CubicRubik *ptrCR);
+void wca_Lw(struct CubicRubik *ptrCR);
+void wca_LwA(struct CubicRubik *ptrCR);
+
+void wca_R(struct CubicRubik *ptrCR);
+void wca_RA(struct CubicRubik *ptrCR);
+void wca_Rw(struct CubicRubik *ptrCR);
+void wca_RwA(struct CubicRubik *ptrCR);
+
+void wca_U(struct CubicRubik *ptrCR);
+void wca_UA(struct CubicRubik *ptrCR);
+void wca_Uw(struct CubicRubik *ptrCR);
+void wca_UwA(struct CubicRubik *ptrCR);
+
+void wca_D(struct CubicRubik *ptrCR);
+void wca_DA(struct CubicRubik *ptrCR);
+void wca_Dw(struct CubicRubik *ptrCR);
+void wca_DwA(struct CubicRubik *ptrCR);
 
 #endif
