@@ -1,5 +1,5 @@
+#include <stdio.h>      // Подключаем библиотеку ввода и вывода.
 #include "structure.h"  // Продключаем файл с описанием структуры кубика Рубика.
-#include <stdio.h>
 
 // Сброс одной стороны кубика.
 void structureSideReset(unsigned char defaultColor, struct sideCR *ptrSide){
